@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VQCC: bài toán cần giải</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: một cột đọc ~68ch, mỗi benchmark là một "hồ sơ" có thẻ hợp đồng mạch + bảng số liệu; bảng/sơ đồ cuộn ngang riêng */
+:root {
+  --bg: #f6f7f8;
+  --surface: #ffffff;
+  --fg: #16202a;
+  --muted: #5a6875;
+  --line: #d9dfe4;
+  --accent: #0e6b7a;
+  --accent-soft: #e2f0f2;
+  --good: #1d7a44;
+  --warn: #9a6400;
+  --bad: #a23a2c;
+  --code-bg: #eef1f3;
+  --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f151b; --surface: #161e26; --fg: #e3e9ee; --muted: #9aa8b4; --line: #2a3540;
+    --accent: #5ec2cf; --accent-soft: #13313a; --good: #5fcf8c; --warn: #e0b04f; --bad: #f08a7a; --code-bg: #1c2630;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f151b; --surface: #161e26; --fg: #e3e9ee; --muted: #9aa8b4; --line: #2a3540;
+  --accent: #5ec2cf; --accent-soft: #13313a; --good: #5fcf8c; --warn: #e0b04f; --bad: #f08a7a; --code-bg: #1c2630;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+.wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 40px; }
+.prose { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 28px; font-weight: 700; }
+h3 { font-size: 19px; font-weight: 600; margin-top: 8px; }
+p { margin: 0; }
+.stack { display: grid; gap: 14px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { font-size: 18px; color: var(--muted); max-width: 64ch; }
+code, .mono { font-family: var(--f-mono); font-size: 0.92em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.formula {
+  font-family: var(--f-mono); font-size: 15px; background: var(--code-bg);
+  border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: 0 6px 6px 0;
+  overflow-x: auto; white-space: pre; line-height: 1.7;
+}
+ul, ol { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+a { color: var(--accent); }
+hr { border: none; border-top: 1px solid var(--line); margin: 0; }
+
+.scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.score { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: grid; gap: 2px; }
+.score .k { font-size: 13px; color: var(--muted); }
+.score .v { font-family: var(--f-display); font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.score .s { font-size: 13px; color: var(--muted); }
+
+.case { display: grid; gap: 18px; }
+.contract {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px;
+  display: grid; gap: 10px;
+}
+.contract dl { margin: 0; display: grid; grid-template-columns: 150px 1fr; gap: 8px 16px; }
+.contract dt { font-size: 13px; color: var(--muted); font-weight: 500; }
+.contract dd { margin: 0; min-width: 0; }
+@media (max-width: 560px) { .contract dl { grid-template-columns: 1fr; gap: 2px 0; } .contract dd { margin-bottom: 8px; } }
+
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; background: var(--code-bg); }
+tr:last-child td { border-bottom: none; }
+td.num { text-align: right; white-space: nowrap; }
+tr.ours td { background: var(--accent-soft); }
+
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); }
+
+.note { font-size: 14px; color: var(--muted); }
+.callout { border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px; background: var(--surface); display: grid; gap: 8px; }
+.callout strong { color: var(--accent); }
+
+.bars { display: grid; gap: 8px; }
+.bar { display: grid; grid-template-columns: 150px 1fr 70px; gap: 10px; align-items: center; font-size: 14px; }
+.bar .track { height: 14px; background: var(--code-bg); border-radius: 3px; overflow: hidden; }
+.bar .fill { height: 100%; background: var(--accent); }
+.bar .val { text-align: right; font-family: var(--f-mono); font-size: 13px; }
+@media (max-width: 520px) { .bar { grid-template-columns: 110px 1fr 60px; } }
+.diagram { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+</style>
+
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="stack">
+  <div class="eyebrow">Kaggle · Google Quantum AI · Verifiable Quantum Circuit Compilation</div>
+  <h1>Chính xác thì mình đang phải giải bài toán gì?</h1>
+  <p class="lede">Cuộc thi yêu cầu viết ba mạch lượng tử "kiểu cổ điển" (mạch đảo ngược được, chỉ dùng cổng Toffoli, CNOT, X, Z, đo X‑basis) sao cho đúng tuyệt đối trên mọi đầu vào kiểm thử, và tốn ít tài nguyên nhất. Báo cáo này giải thích từng bài: mạch phải làm gì, điểm được tính ra sao, mình đang ở đâu và còn gì để cải tiến.</p>
+</header>
+
+<section class="stack">
+  <h2>Luật chung</h2>
+  <div class="prose stack">
+    <p>Mỗi bài nộp là một thư mục gồm ba lời giải, nén thành file tên đúng <code>submission.zip</code>. Ban tổ chức chạy <b>verifier</b> (bộ mô phỏng <code>kickmix</code>) trên mọi đầu vào thử: mạch phải cho đúng kết quả, trả mọi qubit phụ về |0⟩, và không để lại pha thừa. Sau đó nó đếm cổng Toffoli (cổng đắt nhất trên máy lượng tử chịu lỗi) và đếm qubit.</p>
+    <p>Vì mạch chỉ gồm cổng cổ điển, mô phỏng chạy trên CPU thường. Máy lượng tử thật (như Quandela) không giúp gì cho điểm số.</p>
+    <p>Mỗi bài có một mạch tham chiếu của Google. Điểm bảng xếp hạng là <b>trung bình nhân</b> của ba hệ số cải thiện so với tham chiếu:</p>
+  </div>
+  <div class="formula">LB = ( ref₁/score₁ × ref₂/score₂ × ref₃/score₃ )^(1/3)</div>
+  <p class="prose note">Đã kiểm chứng: lần nộp đầu chỉ cải thiện bài I (×5.98), được LB = 1.815 = 5.98^(1/3). Hệ quả: cải thiện bài nào thêm ×2 cũng đều nhân LB lên 2^(1/3) ≈ 1.26, nên bài đang yếu nhất là bài đáng làm nhất.</p>
+  <div class="scores">
+    <div class="score"><span class="k">LB hiện tại</span><span class="v">3.686</span><span class="s">lần nộp 4 / 29‑10‑2026</span></div>
+    <div class="score"><span class="k">Bài I · 1/√x</span><span class="v">×5.98</span><span class="s">347,447 vs 2,076,774</span></div>
+    <div class="score"><span class="k">Bài II · DQI</span><span class="v">×8.41</span><span class="s">2.90e12 vs 2.44e13</span></div>
+    <div class="score"><span class="k">Bài III · FeMoCo</span><span class="v">×1.00</span><span class="s">chưa làm, đang dùng tham chiếu</span></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ===================== I ===================== -->
+<section class="case">
+  <div class="stack">
+    <div class="eyebrow">Bài I</div>
+    <h2>Pha nghịch đảo căn bậc hai: e<sup>2πi/√x</sup></h2>
+    <p class="prose">Đây là bước then chốt khi mô phỏng hoá học lượng tử trong không gian thực: thế năng Coulomb giữa hai electron là 1/khoảng cách, nên mạch phải gắn một pha tỉ lệ với 1/√x vào trạng thái, với x là bình phương khoảng cách trên lưới.</p>
+  </div>
+  <div class="contract">
+    <h3>Hợp đồng mạch</h3>
+    <dl>
+      <dt>Đầu vào</dt><dd>Thanh ghi lượng tử <code>x</code> 22 qubit, giá trị trong [1, 3 133 452] (np = 10, η = 218 electron).</dd>
+      <dt>Phải làm</dt><dd>|x⟩|0…0⟩ → e<sup>2πi/√x</sup> |x⟩|0…0⟩: chỉ đổi pha, mọi qubit phụ về 0.</dd>
+      <dt>Độ chính xác</dt><dd>Sai số pha &lt; 2<sup>−24</sup>/√x vòng, tức sai số tương đối 2<sup>−24</sup> ≈ 6·10<sup>−8</sup>. Thử <b>mọi</b> x, mỗi x 64 lần (≈ 200 triệu shot); chỉ cần 1 lỗi là bị loại.</dd>
+      <dt>Điểm</dt><dd><code>S = Q × (Toffoli + T/4)</code>. Mỗi phép quay Z_POW còn lại được quy ra T: 0.56·log₂(1/ε)+5.3, với ε là biên sai số còn dư chia đều cho các phép quay.</dd>
+    </dl>
+  </div>
+  <div class="stack prose">
+    <h3>Cách mình làm</h3>
+    <ol>
+      <li><b>Chuẩn hoá:</b> viết x = 2<sup>e</sup>·m với m ∈ [1,2) bằng bộ dịch thùng (barrel shifter) 16/8/4/2/1 có điều khiển.</li>
+      <li><b>Xấp xỉ:</b> 1/√m bằng đa thức bậc 2 trên 128 đoạn; hệ số nạp bằng QROM, tính theo Horner với các hàng tích được cắt ngắn và bù sai lệch bằng hệ số.</li>
+      <li><b>Khôi phục thang:</b> dịch kết quả lại theo e/2, rồi phát một Z_POW cho mỗi bit của y.</li>
+      <li><b>Dọn dẹp:</b> chạy ngược tất cả; bảng QROM xoá bằng đo (rẻ hơn chạy ngược).</li>
+      <li>Thiết kế được chọn bằng tìm kiếm trên ~8 000 cấu hình, rồi chạy verifier chính thức.</li>
+    </ol>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Mạch</th><th class="num">Qubit</th><th class="num">Toffoli</th><th class="num">Phép quay</th><th class="num">Điểm S</th><th class="num">Hệ số</th></tr></thead>
+    <tbody>
+      <tr><td>Tham chiếu Google (Newton–Raphson)</td><td class="num">260</td><td class="num">7 735</td><td class="num">37</td><td class="num">2 076 774</td><td class="num">×1</td></tr>
+      <tr class="ours"><td>Của mình (gen_poly3, k=7, bậc 2)</td><td class="num">158</td><td class="num">1 957</td><td class="num">33</td><td class="num">347 447</td><td class="num">×5.98</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout">
+    <p><strong>Còn có thể làm:</strong> giảm số qubit tạm (Q đang 158), giảm chi phí Horner (~609 Toffoli mỗi chiều), thử đoạn không đều. Bài báo Gu et al. 2026 làm bài tương tự ở np = 6 với sai số lỏng hơn (2·10<sup>−6</sup>) nên dùng đường thẳng; với yêu cầu 2<sup>−24</sup> của mình, bậc 2 vẫn là lựa chọn hợp lý.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ===================== II ===================== -->
+<section class="case">
+  <div class="stack">
+    <div class="eyebrow">Bài II</div>
+    <h2>Bộ giải mã Reed–Solomon cho DQI</h2>
+    <p class="prose">DQI (Decoded Quantum Interferometry) là thuật toán tối ưu hoá lượng tử: nó biến bài toán khớp đa thức trên trường hữu hạn (OPI) thành bài toán <b>giải mã mã sửa lỗi</b>. Phần đắt nhất là chạy bộ giải mã một cách khả nghịch trên chồng chập. Đây là ứng viên "lợi thế lượng tử kiểm chứng được".</p>
+  </div>
+  <div class="contract">
+    <h3>Hợp đồng mạch</h3>
+    <dl>
+      <dt>Đầu vào lượng tử</dt><dd>70 syndrome S₀…S₆₉, mỗi cái là phần tử của GF(2<sup>12</sup>) (12 qubit) → 840 qubit. S<sub>i</sub> = Σ<sub>j</sub> e<sub>j</sub>·α<sup>(i+1)j</sup> với một lỗi e có tối đa 35 vị trí khác 0 trong 4 095 vị trí.</dd>
+      <dt>Đầu vào cổ điển</dt><dd>4 095 thanh ghi bit E₀…E₄₀₉₄ (12 bit mỗi cái): kết quả đo M<sub>j</sub>.</dd>
+      <dt>Phải làm</dt><dd>Không biết e, mạch phải tự giải mã e từ syndrome rồi nhân pha (−1)<sup>Σ popcount(e<sub>j</sub> AND M<sub>j</sub>)</sup>; trả syndrome nguyên vẹn, mọi qubit phụ về 0. Cấm Z_POW.</dd>
+      <dt>Kiểm thử</dt><dd>102 400 shot ngẫu nhiên theo phân phối DQI (trọng số lỗi trung bình 31, tối đa 35). Được phép sai một ít.</dd>
+      <dt>Điểm</dt><dd><code>S = R(ε₊) × Q² × T</code>: Q tính <b>bình phương</b>, T là Toffoli trung bình mỗi shot, R là hệ số lặp lại do sai: R = ln2 / −ln(½ + 2√ε₊), ε₊ là cận trên Clopper–Pearson ở độ tin cậy 1−2<sup>−128</sup>. Không sai nào vẫn có R ≈ 1.19; ε₊ ≥ 1/16 là bị loại.</dd>
+    </dl>
+  </div>
+  <div class="stack prose">
+    <h3>Ba bước của bộ giải mã</h3>
+    <ol>
+      <li><b>Giải phương trình khoá</b> σ(z)·S(z) ≡ ω(z) mod z<sup>70</sup>: tìm đa thức định vị lỗi σ (bậc ≤ 35) và đa thức giá trị ω. Tham chiếu dùng thuật toán Euclid mở rộng "đồng bộ" 222 chu kỳ, phải điều khiển mọi phép tính theo dữ liệu nên rất đắt.</li>
+      <li><b>Chien + Forney</b>: thử cả 4 095 vị trí; ở vị trí σ(β) = 0 thì giá trị lỗi là ω(β)/σ′(β), lấy pha luôn mà không cần lưu e.</li>
+      <li><b>Chạy ngược</b> bước 1 để trả syndrome và dọn qubit phụ.</li>
+    </ol>
+  </div>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Phiên bản</th><th>Ý tưởng chính</th><th class="num">Qubit</th><th class="num">Toffoli</th><th class="num">Lỗi</th><th class="num">Điểm</th><th class="num">Hệ số</th></tr></thead>
+    <tbody>
+      <tr><td>Tham chiếu</td><td>EEA đồng bộ, nhân Karatsuba 63 Toffoli, nghịch đảo Itoh–Tsujii 315</td><td class="num">1 893</td><td class="num">5.73M</td><td class="num">0</td><td class="num">2.44e13</td><td class="num">×1</td></tr>
+      <tr><td>v1</td><td>Phép nhân GF song tuyến tính 42 Toffoli, nghịch đảo kiểu tháp GF(8)⊂GF(64)⊂GF(4096) 75 Toffoli</td><td class="num">1 866</td><td class="num">3.73M</td><td class="num">0</td><td class="num">1.55e13</td><td class="num">×1.58</td></tr>
+      <tr><td>v2</td><td>Viết lại EEA dạng "divstep" bố cục tĩnh: dịch = đổi nhãn miễn phí, bỏ con trỏ</td><td class="num">1 825</td><td class="num">905k</td><td class="num">0.71%</td><td class="num">6.12e12</td><td class="num">×4.0</td></tr>
+      <tr><td>v3b</td><td>Thêm xử lý thương bậc 2 → hết lỗi</td><td class="num">1 848</td><td class="num">1.03M</td><td class="num">0</td><td class="num">4.18e12</td><td class="num">×5.84</td></tr>
+      <tr class="ours"><td>v4 (đang nộp)</td><td>Berlekamp–Massey khả nghịch theo Gu et al. 2026: một khối nhân dùng chung, bất biến σ₀δ = 1, stack 1 ô</td><td class="num">1 787</td><td class="num">737k</td><td class="num">0.012%</td><td class="num">2.90e12</td><td class="num">×8.41</td></tr>
+      <tr><td>Mục tiêu (bài báo)</td><td>BM + bộ quét Chien 23 Toffoli/vị trí</td><td class="num">1 837</td><td class="num">440k</td><td class="num">~0.01%</td><td class="num">≈1.8e12</td><td class="num">≈×13.6</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="stack">
+    <h3>Toffoli của v4 nằm ở đâu</h3>
+    <div class="bars" role="img" aria-label="Phân bổ Toffoli của DQI v4">
+      <div class="bar"><span>Chien + Forney</span><span class="track"><span class="fill" style="display:block;width:49.5%"></span></span><span class="val">364k</span></div>
+      <div class="bar"><span>BM thuận</span><span class="track"><span class="fill" style="display:block;width:21.5%"></span></span><span class="val">158k</span></div>
+      <div class="bar"><span>BM ngược</span><span class="track"><span class="fill" style="display:block;width:21.5%"></span></span><span class="val">158k</span></div>
+      <div class="bar"><span>ω tại chỗ (2 chiều)</span><span class="track"><span class="fill" style="display:block;width:6.8%"></span></span><span class="val">50k</span></div>
+    </div>
+    <p class="note">Tổng 737k. Bộ quét Chien hiện tốn 89 Toffoli/vị trí vì phải tính nghịch đảo σ′(β) ở cả 4 095 vị trí.</p>
+  </div>
+  <div class="callout">
+    <p><strong>Bước tiếp theo:</strong> tính trước Ψ = 1/σ′ mod σ (một thuật toán Euclid nhỏ bậc 17 nhờ tách σ = E² + z·O²), đặt vào 35 thanh ghi syndrome đã được làm về 0. Khi đó mỗi vị trí chỉ cần kiểm tra σ(β) = 0 (11 Toffoli) cộng 12 Toffoli cho pha song tuyến tính, tức 23 thay vì 89. Ước tính T giảm thêm 10–15%.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ===================== III ===================== -->
+<section class="case">
+  <div class="stack">
+    <div class="eyebrow">Bài III · chưa làm</div>
+    <h2>Mã hoá Hamiltonian FeMoCo bằng DF‑THC</h2>
+    <p class="prose">FeMoCo là cụm kim loại trong enzyme nitrogenase (cố định đạm). Tính năng lượng trạng thái cơ bản của nó là mục tiêu kinh điển của máy lượng tử chịu lỗi. Thuật toán (Low et al., PRX 2025) cần "block‑encode" Hamiltonian với 76 orbital, 113 electron. Bài này kết hợp <b>tối ưu số học cổ điển</b> (phân tích tensor) với <b>thiết kế mạch</b> (bảng tra QROM nạp góc quay).</p>
+  </div>
+  <div class="contract">
+    <h3>Mình phải nộp gì</h3>
+    <dl>
+      <dt>1. Phép phân tích</dt><dd>Chọn kích thước (R, B, C) và tìm R·B vectơ đơn vị u (76 chiều) cùng trọng số w, W sao cho tensor hai electron h<sub>pqrs</sub> (76⁴ phần tử) được xấp xỉ bằng Σ<sub>ρ,c</sub> X<sup>(ρc)</sup>⊗X<sup>(ρc)</sup>, với X<sup>(ρc)</sup> = Σ<sub>b</sub> w<sub>b</sub><sup>(ρc)</sup> u<sub>b</sub><sup>(ρ)</sup>u<sub>b</sub><sup>(ρ)T</sup>. Sai số Frobenius phải &lt; 20 mHa.</dd>
+      <dt>2. Mạch ANGLES</dt><dd>Mỗi vectơ u được mã hoá thành 75 góc Givens (mỗi góc <i>brot</i> bit) trên một cây. Mạch là QROM: theo địa chỉ a &lt; 76 + R·B, nạp từng lô J góc vào thanh ghi. Mỗi mạch ≤ 128 qubit.</dd>
+      <dt>3. Cây Givens</dt><dd>Thứ tự cạnh (parent → child) dùng để giải mã góc thành vectơ.</dd>
+    </dl>
+  </div>
+  <div class="formula">score = λ_eff × T_total × Q_total
+
+λ_eff   = √( E_gap · (2Λ − E_gap) )
+Λ       = chuẩn một (one-norm) của LCU  — phải > 49
+E_gap   = E_upper − E_SOS               — phải > 3.914898 Ha
+T_total = Toffoli của ANGLES (thuận + ngược) + chi phí heuristic (state prep, Givens)
+Q_total = qubit cố định + J·brot + max(qubit tạm của các khối chạy tuần tự)</div>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Đại lượng (tham chiếu R,B,C = 65,60,60, brot 12, J 8)</th><th class="num">Giá trị</th><th>Nhận xét</th></tr></thead>
+    <tbody>
+      <tr><td>λ_eff</td><td class="num">49.30</td><td>Λ = 308 còn rất xa sàn 49: nếu chạm sàn λ_eff ≈ 19.2 <span class="pill good">tối đa ×2.57</span></td></tr>
+      <tr><td>error₂ (giới hạn 0.020)</td><td class="num">0.0186</td><td>Gần sát giới hạn; giảm Λ mà vẫn giữ sai số là bài toán tối ưu khó</td></tr>
+      <tr><td>E_gap (sàn 3.9149)</td><td class="num">3.965</td><td>Đã gần sàn, ít dư địa</td></tr>
+      <tr><td>Toffoli ANGLES</td><td class="num">79 480</td><td>85% của T. Bằng 2 × 10 lô × ~3 976 địa chỉ; tỷ lệ với 76 + R·B <span class="pill warn">giảm được qua hình dạng</span></td></tr>
+      <tr><td>Toffoli heuristic</td><td class="num">13 757</td><td>Outer 846 + inner 9 461 + Givens 3 450</td></tr>
+      <tr><td>Q_total</td><td class="num">730</td><td>544 là qubit tạm của inner prep (QROAM tự chọn theo B). B nhỏ ép QROAM nhỏ <span class="pill good">Q có thể giảm ~2×</span></td></tr>
+      <tr><td><b>Điểm</b></td><td class="num"><b>3.356e9</b></td><td>Mình đang nộp đúng bản tham chiếu này</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout">
+    <p><strong>Vì sao bài này đáng làm nhất:</strong> nó đang ×1. Mỗi ×2 ở đây nhân LB thêm 1.26. Ba đòn bẩy nhân với nhau: λ_eff (phân tích tốt hơn), T (ít địa chỉ, ít lô góc), Q (hình dạng R, B, C hợp lý). Cái khó là phải tự viết bộ huấn luyện phân tích DF‑THC trên tensor 76⁴ và cân bằng giữa sai số, Λ và chi phí mạch.</p>
+  </div>
+</section>
+
+<hr>
+
+<section class="stack">
+  <h2>Lộ trình</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Việc</th><th>Bài</th><th>Ước tính tác động lên LB</th><th>Trạng thái</th></tr></thead>
+    <tbody>
+      <tr><td>Bộ quét Chien 23 Toffoli với Ψ tính trước</td><td>II</td><td>DQI ×8.4 → ~×9.5</td><td><span class="pill warn">tiếp theo</span></td></tr>
+      <tr><td>Khảo sát mô hình chi phí theo (R, B, C, brot)</td><td>III</td><td>chỉ ra hình dạng rẻ nhất</td><td><span class="pill warn">tiếp theo</span></td></tr>
+      <tr><td>Bộ huấn luyện phân tích DF‑THC, giảm Λ</td><td>III</td><td>FeMoCo ×1 → ×2–5 (LB ×1.26–1.7)</td><td><span class="pill bad">chưa bắt đầu</span></td></tr>
+      <tr><td>Giảm qubit / Horner cho 1/√x</td><td>I</td><td>vài chục %</td><td><span class="pill bad">chưa bắt đầu</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Lần nộp</th><th>Nội dung</th><th class="num">LB</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>invsqrt ×5.98</td><td class="num">1.815</td></tr>
+      <tr><td>2</td><td>+ DQI v2 ×4.0</td><td class="num">2.852</td></tr>
+      <tr><td>3</td><td>+ DQI v3b ×5.84</td><td class="num">3.269</td></tr>
+      <tr class="ours"><td>4</td><td>+ DQI v4 ×8.41</td><td class="num">3.686</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stack prose">
+  <h2>Tài liệu tham khảo chính</h2>
+  <ul>
+    <li>Cuộc thi và benchmark: <a href="https://www.kaggle.com/competitions/google-verifiable-quantum-circuit-compilation/overview">Kaggle · Google VQCC</a>; bài mô tả <i>Verifiable Quantum Circuit Compilation</i> kèm dữ liệu cuộc thi.</li>
+    <li>Khattar et al., <a href="https://arxiv.org/abs/2510.10967">Verifiable quantum advantage via optimized DQI circuits</a> (2025): mạch tham chiếu bài II.</li>
+    <li>Gu, Kemeny, Yelin, Lukin, <a href="https://arxiv.org/abs/2610.22367">Discovering state-of-the-art quantum circuits with large language models</a> (2026): Berlekamp–Massey khả nghịch, bộ quét Chien 23 Toffoli, Coulomb potential.</li>
+    <li>Low et al., <a href="https://arxiv.org/abs/2502.15882">Fast quantum simulation of electronic structure by spectrum amplification</a>, PRX 15, 041016 (2025): DF‑THC và SOS cho bài III.</li>
+    <li><a href="https://arxiv.org/abs/2602.15285">Tensor decomposition for non-Clifford gate minimization</a> (2026) và Cenk &amp; Özbudak, J. Complexity 26 (2010): độ phức tạp phép nhân GF(2<sup>p</sup>).</li>
+    <li>Babbush et al., <i>Encoding electronic spectra in quantum circuits with linear T complexity</i>, PRX 8, 041015 (2018): QROM / unary iteration.</li>
+  </ul>
+  <p class="note">Mã nguồn: <code>/home/khang/job/google_quantum</code> (<code>invsqrt/gen_poly3.py</code>, <code>dqi/decoder4.py</code>, <code>dqi/gfq.py</code>, <code>dqi/gfalg.py</code>).</p>
+</section>
+
+</div>
+
+</body>
+</html>

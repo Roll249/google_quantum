@@ -1,0 +1,137 @@
+<svg viewBox="-100 -140 1200.0 340.0" style="display: block; margin: auto;" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="-12.3077" width="13.9532" height="12.3077" stroke="black" fill="blue" />
+<rect x="0" y="20" width="13.9532" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="6.9766" y="27" font-size="1.64155" dominant-baseline="bottom" text-anchor="middle" fill="black" >left_rotate (x20)</text>
+<rect x="0" y="-4.61538" width="15.2217" height="4.61538" stroke="black" fill="blue" />
+<rect x="0" y="10" width="15.2217" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="7.61083" y="17" font-size="3.38259" dominant-baseline="bottom" text-anchor="middle" fill="black" >normalize</text>
+<rect x="15.2217" y="-13.4615" width="0.380542" height="13.4615" stroke="black" fill="blue" />
+<rect x="15.2217" y="10" width="0.380542" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="15.4119" y="17" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >select_interval</text>
+<rect x="15.6022" y="-34.6154" width="0" height="34.6154" stroke="black" fill="blue" />
+<rect x="15.6022" y="20" width="0" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="15.6022" y="27" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >gf_iadd (x4)</text>
+<rect x="15.6022" y="-36.9231" width="0" height="36.9231" stroke="black" fill="blue" />
+<rect x="15.6022" y="20" width="0" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="15.6022" y="27" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >c_gf_iadd (x12)</text>
+<rect x="15.6022" y="-13.4615" width="0" height="13.4615" stroke="black" fill="blue" />
+<rect x="15.6022" y="10" width="0" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="15.6022" y="17" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >load_coefficients</text>
+<rect x="15.6022" y="-51.9231" width="85.2413" height="51.9231" stroke="black" fill="blue" />
+<rect x="15.6022" y="30" width="85.2413" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="58.2229" y="37" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >isub (x42)</text>
+<rect x="15.6022" y="-46.1538" width="135.853" height="46.1538" stroke="black" fill="blue" />
+<rect x="15.6022" y="20" width="135.853" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="83.5289" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >horner_step (x3)</text>
+<rect x="15.6022" y="-36.9231" width="135.853" height="36.9231" stroke="black" fill="blue" />
+<rect x="15.6022" y="10" width="135.853" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="83.5289" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >horner</text>
+<rect x="151.456" y="-71.1538" width="39.5763" height="71.1538" stroke="black" fill="blue" />
+<rect x="151.456" y="20" width="39.5763" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="171.244" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd (x14)</text>
+<rect x="151.456" y="-55.3846" width="56.0665" height="55.3846" stroke="black" fill="blue" />
+<rect x="151.456" y="10" width="56.0665" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="179.489" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >square</text>
+<rect x="207.522" y="-84.2308" width="80.8017" height="84.2308" stroke="black" fill="blue" />
+<rect x="207.522" y="20" width="80.8017" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="247.923" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd (x22)</text>
+<rect x="207.522" y="-61.5385" width="132.302" height="61.5385" stroke="black" fill="blue" />
+<rect x="207.522" y="10" width="132.302" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="273.673" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >multiply_m</text>
+<rect x="339.824" y="-73.4615" width="0.126847" height="73.4615" stroke="black" fill="blue" />
+<rect x="339.824" y="30" width="0.126847" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="339.887" y="37" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd_classical</text>
+<rect x="339.824" y="-73.0769" width="3.55172" height="73.0769" stroke="black" fill="blue" />
+<rect x="339.824" y="20" width="3.55172" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="341.6" y="27" font-size="0.507389" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd_classical</text>
+<rect x="339.824" y="-62.3077" width="3.55172" height="62.3077" stroke="black" fill="blue" />
+<rect x="339.824" y="10" width="3.55172" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="341.6" y="17" font-size="1.01478" dominant-baseline="bottom" text-anchor="middle" fill="black" >correct</text>
+<rect x="343.375" y="-95.7692" width="62.5357" height="95.7692" stroke="black" fill="blue" />
+<rect x="343.375" y="20" width="62.5357" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="374.643" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd (x17)</text>
+<rect x="343.375" y="-73.4615" width="109.977" height="73.4615" stroke="black" fill="blue" />
+<rect x="343.375" y="10" width="109.977" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="398.364" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >multiply_y0</text>
+<rect x="453.352" y="-83.4615" width="38.0542" height="83.4615" stroke="black" fill="blue" />
+<rect x="453.352" y="20" width="38.0542" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="472.379" y="27" font-size="4.47696" dominant-baseline="bottom" text-anchor="middle" fill="black" >left_rotate (x10)</text>
+<rect x="453.352" y="-79.6154" width="38.0542" height="79.6154" stroke="black" fill="blue" />
+<rect x="453.352" y="10" width="38.0542" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="472.379" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >denormalize</text>
+<rect x="0" y="-0" width="491.406" height="0" stroke="black" fill="blue" />
+<rect x="0" y="0" width="491.406" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="245.703" y="7" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >compute_y1</text>
+<rect x="491.406" y="-83.4615" width="18.8368" height="83.4615" stroke="black" fill="blue" />
+<rect x="491.406" y="0" width="18.8368" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="500.825" y="7" font-size="2.89797" dominant-baseline="bottom" text-anchor="middle" fill="black" >phase_by_bits</text>
+<rect x="510.243" y="-83.4615" width="38.0542" height="83.4615" stroke="black" fill="blue" />
+<rect x="510.243" y="20" width="38.0542" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="529.27" y="27" font-size="4.22824" dominant-baseline="bottom" text-anchor="middle" fill="black" >right_rotate (x10)</text>
+<rect x="510.243" y="-83.4615" width="38.0542" height="83.4615" stroke="black" fill="blue" />
+<rect x="510.243" y="10" width="38.0542" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="529.27" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >denormalize</text>
+<rect x="548.297" y="-99.6154" width="62.5357" height="99.6154" stroke="black" fill="blue" />
+<rect x="548.297" y="20" width="62.5357" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="579.565" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >isub (x17)</text>
+<rect x="548.297" y="-88.8462" width="109.977" height="88.8462" stroke="black" fill="blue" />
+<rect x="548.297" y="10" width="109.977" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="603.285" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >multiply_y0</text>
+<rect x="658.274" y="-94.6154" width="0.126847" height="94.6154" stroke="black" fill="blue" />
+<rect x="658.274" y="40" width="0.126847" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="658.337" y="47" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd_classical</text>
+<rect x="658.274" y="-94.2308" width="3.55172" height="94.2308" stroke="black" fill="blue" />
+<rect x="658.274" y="30" width="3.55172" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="660.049" y="37" font-size="0.507389" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd_classical</text>
+<rect x="658.274" y="-83.4615" width="3.55172" height="83.4615" stroke="black" fill="blue" />
+<rect x="658.274" y="20" width="3.55172" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="660.049" y="27" font-size="0.507389" dominant-baseline="bottom" text-anchor="middle" fill="black" >isub_classical</text>
+<rect x="658.274" y="-83.4615" width="3.55172" height="83.4615" stroke="black" fill="blue" />
+<rect x="658.274" y="10" width="3.55172" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="660.049" y="17" font-size="1.01478" dominant-baseline="bottom" text-anchor="middle" fill="black" >correct</text>
+<rect x="661.825" y="-99.6154" width="80.8017" height="99.6154" stroke="black" fill="blue" />
+<rect x="661.825" y="20" width="80.8017" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="702.226" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >isub (x22)</text>
+<rect x="661.825" y="-88.8462" width="132.302" height="88.8462" stroke="black" fill="blue" />
+<rect x="661.825" y="10" width="132.302" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="727.976" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >multiply_m</text>
+<rect x="794.127" y="-98.4615" width="39.5763" height="98.4615" stroke="black" fill="blue" />
+<rect x="794.127" y="20" width="39.5763" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="813.915" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >isub (x14)</text>
+<rect x="794.127" y="-88.0769" width="56.0665" height="88.0769" stroke="black" fill="blue" />
+<rect x="794.127" y="10" width="56.0665" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="822.16" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >square</text>
+<rect x="850.193" y="-94.2308" width="85.2413" height="94.2308" stroke="black" fill="blue" />
+<rect x="850.193" y="30" width="85.2413" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="892.814" y="37" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >iadd (x42)</text>
+<rect x="850.193" y="-88.4615" width="135.853" height="88.4615" stroke="black" fill="blue" />
+<rect x="850.193" y="20" width="135.853" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="918.12" y="27" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >horner_step (x3)</text>
+<rect x="850.193" y="-88.0769" width="135.853" height="88.0769" stroke="black" fill="blue" />
+<rect x="850.193" y="10" width="135.853" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="918.12" y="17" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >horner</text>
+<rect x="986.047" y="-87.3077" width="0" height="87.3077" stroke="black" fill="blue" />
+<rect x="986.047" y="20" width="0" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="986.047" y="27" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >gf_iadd (x4)</text>
+<rect x="986.047" y="-87.3077" width="0" height="87.3077" stroke="black" fill="blue" />
+<rect x="986.047" y="20" width="0" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="986.047" y="27" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >c_gf_iadd (x12)</text>
+<rect x="986.047" y="-87.3077" width="0" height="87.3077" stroke="black" fill="blue" />
+<rect x="986.047" y="10" width="0" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="986.047" y="17" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >load_coefficients</text>
+<rect x="986.047" y="-87.3077" width="0" height="87.3077" stroke="black" fill="blue" />
+<rect x="986.047" y="10" width="0" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="986.047" y="17" font-size="0.5" dominant-baseline="bottom" text-anchor="middle" fill="black" >select_interval</text>
+<rect x="986.047" y="-86.1538" width="13.9532" height="86.1538" stroke="black" fill="blue" />
+<rect x="986.047" y="20" width="13.9532" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="993.023" y="27" font-size="1.55035" dominant-baseline="bottom" text-anchor="middle" fill="black" >right_rotate (x20)</text>
+<rect x="986.047" y="-86.1538" width="13.9532" height="86.1538" stroke="black" fill="blue" />
+<rect x="986.047" y="10" width="13.9532" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="993.023" y="17" font-size="3.10071" dominant-baseline="bottom" text-anchor="middle" fill="black" >normalize</text>
+<rect x="510.243" y="-83.4615" width="489.757" height="83.4615" stroke="black" fill="blue" />
+<rect x="510.243" y="0" width="489.757" height="10" stroke="black" fill="red" opacity="0.8" />
+<text x="755.121" y="7" font-size="5" dominant-baseline="bottom" text-anchor="middle" fill="black" >uncompute_y1</text>
+<rect x="0" y="-0" width="1000" height="0" stroke="black" fill="blue" />
+<text x="500" y="-100" font-size="10" dominant-baseline="bottom" text-anchor="middle" fill="black" >260 qubits, 7883.5 CCZ states (=CCX + CCZ + CSWAP + Z_POW[level=3]/2 + 4 Z_POW[level>=4])</text>
+<path d=" M500,-38.4615 l50,0 M500,-76.9231 l50,0" fill="none" stroke="green" />
+</svg>

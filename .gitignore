@@ -1,0 +1,27 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Upstream clone (https://github.com/quantumlib/Qualtran)
+qualtran/
+
+# Downloaded challenge data / third-party papers
+data/
+papers/
+
+# Generated circuits and large artifacts
+*.kmb
+*.kmx
+*.npy
+*.npz
+*.pkl
+*.so
+*.zip
+*.fcidump
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
